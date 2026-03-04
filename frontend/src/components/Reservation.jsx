@@ -39,11 +39,8 @@ const Reservation = () => {
       setDate("");
 
       navigate("/success");
-
     } catch (error) {
-      toast.error(
-        error.response?.data?.message || "Something went wrong"
-      );
+      toast.error(error.response?.data?.message || "Something went wrong");
     }
   };
 
@@ -51,13 +48,15 @@ const Reservation = () => {
     <section className="reservation" id="reservation">
       <div className="container">
         <div className="banner">
-          <img src="/reservation.png" alt="res" />
+          <div className="imageWrapper">
+            <img src="/reservation.png" alt="Dining table" />
+          </div>
         </div>
 
         <div className="banner">
           <div className="reservation_form_box">
-            <h1>MAKE A RESERVATION</h1>
-            <p>For Further Questions, Please Call</p>
+            <h1>RESERVE <span>A TABLE</span></h1>
+            <p>We hold tables for 15 minutes. Please call if you're running late.</p>
 
             <form onSubmit={handleReservation}>
               <div>
@@ -66,13 +65,14 @@ const Reservation = () => {
                   placeholder="First Name"
                   value={firstName}
                   onChange={(e) => setFirstName(e.target.value)}
+                  required
                 />
-
                 <input
                   type="text"
                   placeholder="Last Name"
                   value={lastName}
                   onChange={(e) => setLastName(e.target.value)}
+                  required
                 />
               </div>
 
@@ -81,12 +81,13 @@ const Reservation = () => {
                   type="date"
                   value={date}
                   onChange={(e) => setDate(e.target.value)}
+                  required
                 />
-
                 <input
                   type="time"
                   value={time}
                   onChange={(e) => setTime(e.target.value)}
+                  required
                 />
               </div>
 
@@ -94,26 +95,25 @@ const Reservation = () => {
                 <input
                   type="email"
                   placeholder="Email"
-                  className="email_tag"
                   value={email}
                   onChange={(e) => setEmail(e.target.value)}
+                  required
                 />
-
                 <input
-                  type="number"
+                  type="tel"
                   placeholder="Phone"
                   value={phone}
                   onChange={(e) => setPhone(e.target.value)}
+                  required
                 />
               </div>
 
               <button type="submit">
-                RESERVE NOW
+                CONFIRM RESERVATION
                 <span>
                   <HiOutlineArrowNarrowRight />
                 </span>
               </button>
-
             </form>
           </div>
         </div>

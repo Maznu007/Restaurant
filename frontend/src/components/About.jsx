@@ -1,35 +1,37 @@
 import React from "react";
-import { Link } from "react-router-dom";
 import { HiOutlineArrowRight } from "react-icons/hi";
 
 const About = () => {
+  const scrollToMenu = () => {
+    const menuSection = document.getElementById('menu');
+    if (menuSection) {
+      menuSection.scrollIntoView({ behavior: 'smooth' });
+    }
+  };
+
   return (
     <>
       <section className="about" id="about">
         <div className="container">
           <div className="banner">
-            <div className="top">
-              <h1 className="heading">ABOUT US</h1>
-              <p>The only thing we're serious about is food.</p>
+            <div className="heading">
+              OUR <span>STORY</span>
             </div>
             <p className="mid">
-              Lorem ipsum dolor sit, amet consectetur adipisicing elit.
-              Provident possimus optio adipisci dolores impedit illum iusto
-              perferendis, laudantium quod accusamus consequuntur consectetur,
-              tempore nulla error iure reiciendis dolorem assumenda.
-              Necessitatibus fugit asperiores totam rem esse exercitationem
-              iusto ipsum qui dolore ex, accusantium repellat mollitia
-              repellendus.
+              Started with a wood-fired oven and a list of farmers we trusted. 
+              No investors, no shortcuts — just a commitment to ingredients that 
+              actually taste like something. We built this place because we 
+              couldn't find food that respected the produce enough to get out 
+              of its way.
             </p>
-            <Link to={"/"}>
-              Explore Menu{" "}
-              <span>
-                <HiOutlineArrowRight />
-              </span>
-            </Link>
+            <div className="aboutCta" onClick={scrollToMenu}>
+              See What We're Cooking <HiOutlineArrowRight />
+            </div>
           </div>
           <div className="banner">
-            <img src="about.png" alt="about" />
+            <div className="imageWrapper">
+              <img src="about.png" alt="Kitchen scene" />
+            </div>
           </div>
         </div>
       </section>

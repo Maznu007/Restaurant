@@ -1,174 +1,210 @@
 {
     "data": [
-        {"ourQualities" : [
-            {
-                "id": 1,
-                "image": "./quality_food.svg",
-                "title": "QUALITY FOOD",
-                "description": "Lorem ipsum dolor sit amet consectetur adipisicing elit. Officiis repellendus officia qui repellat." 
-            },
-            {
-                "id": 2,
-                "image": "./super_taste.svg",
-                "title": "SUPER TASTE",
-                "description": "Lorem ipsum dolor sit amet consectetur, adipisicing sit amet elit. Sit voluptates quaerat pariatur." 
-            },
-            {
-                "id": 3,
-                "image": "./fast_delivery.svg",
-                "title": "FAST DELIVERY",
-                "description": "Lorem ipsum dolor sit amet consectetur adipisicing elit. Officiis repellendus officia qui repellat." 
-            }
-        ],
-        "dishes": [
-            {
-                "id": 1,
-                "image": "./dinner1.jpeg",
-                "title": "ROASTED LAMB RUMP",
-                "category": "Dinner"
-            },
-            {
-                "id": 2,
-                "image": "./dinner2.png",
-                "title": "CITRUS CURED SALMON",
-                "category": "Dinner"
-            },
-            {
-                "id": 3,
-                "image": "./breakfast1.png",
-                "title": "PAN SEARED SEA BASS",
-                "category": "Breakfast"
-            },
-            {
-                "id": 4,
-                "image": "./dinner3.png",
-                "title": "STUFFED STRAWBERRY",
-                "category": "Dinner"
-            },
-            {
-                "id": 5,
-                "image": "./lunch1.png",
-                "title": "BEEF BURGER MEAL",
-                "category": "Lunch"
-            },
-            {
-                "id": 6,
-                "image": "./dinner4.png",
-                "title": "MUSSELS SOUP",
-                "category": "Dinner"
-            },
-            {
-                "id": 7,
-                "image": "./dinner5.png",
-                "title": "ITALIAN SPAGHETTI",
-                "category": "Dinner"
-            },
-            {
-                "id": 8,
-                "image": "./dinner6.png",
-                "title": "GRILLED FISH",
-                "category": "Dinner"
-            }
-        ],
-        "team": [
-            {
-                "id": 1,
-                "image": "./team_member_1.png",
-                "name": "JOHNATHAN TYLER",
-                "designation": "Founder & Head Chef"
-            },
-            {
-                "id": 2,
-                "image": "./team_member_2.png",
-                "name": "WADE WARREN",
-                "designation": "Sous Chef"
-            },
-            {
-                "id": 3,
-                "image": "./team_member_3.png",
-                "name": "JHON DOE",
-                "designation": "Fast Food Chef"
-            },
-            {
-                "id": 4,
-                "image": "./team_member_4.png",
-                "name": "ALEX COAL",
-                "designation": "Senior Chef"
-            }
-        ],
-        "testimonials": [
-            {
-                "id": 1,
-                "image": "./review1.png",
-                "description": "Morbi nulla nec dui lacus, in. Libero in pretium metus massa. Sodales dignissim vitae mauris varius faucibus. Eleifend dui, non laoreet ac luctus facilisis diam. Enim scelerisque vel at id viverra tellus.",
-                "rating": 4,
-                "userName": "Jane Cooper"
-            },
-            {
-                "id": 2,
-                "image": "./review2.png",
-                "description": "Tortor vel nunc netus pharetra enim, enim dolor mauris in. Sit nam fringilla in egestas. Libero condimentum quis in vulputate adipiscing venenatis augue. Venenatis faucibus.",
-                "rating": 4.5,
-                "userName": "Esther Howard"
-            },
-            {
-                "id": 3,
-                "image": "./review3.png",
-                "description": "Tortor vel nunc netus pharetra enim, enim dolor mauris in. Sit nam fringilla in egestas. Libero condimentum quis in vulputate adipiscing venenatis augue. Venenatis faucibus.",
-                "rating": 5,
-                "userName": "Guy Hawkins"
-            }
-        ],
-        "who_we_are": [
-            {
-                "id": 1,
-                "number": "14",
-                "title": "Restaurants"
-            },
-            {
-                "id": 2,
-                "number": "20",
-                "title": "Chef In Kitchen"
-            },
-            {
-                "id": 3,
-                "number": "08",
-                "title": "Years Of Experience"
-            },
-            {
-                "id": 4,
-                "number": "200",
-                "title": "Food Dishes"
-            }
-        ],
-        "navbarLinks": [
-            {
-                "id": 1,
-                "title": "HOME",
-                "link": "heroSection"
-            },
-            {
-                "id": 2,
-                "title": "ABOUT US",
-                "link": "about"
-            },
-            {
-                "id": 3,
-                "title": "SERVICES",
-                "link": "qualities"
-            },
-            {
-                "id": 4,
-                "title": "TEAM",
-                "link": "team"
-            },
-            {
-                "id": 5,
-                "title": "RESERVATION",
-                "link": "reservation"
-            }
-        ]
-    
-    } 
+        {
+            "ourQualities": [
+                {
+                    "id": 1,
+                    "image": "./quality_food.svg",
+                    "title": "FARM SOURCED",
+                    "description": "Every ingredient traced to local farms within 50 miles. We know our farmers by name and visit their fields weekly."
+                },
+                {
+                    "id": 2,
+                    "image": "./super_taste.svg",
+                    "title": "WOOD FIRED",
+                    "description": "Our kitchen centers around a hand-built brick oven. Smoky, charred, alive — flavors you can't replicate on gas."
+                },
+                {
+                    "id": 3,
+                    "image": "./fast_delivery.svg",
+                    "title": "MADE TODAY",
+                    "description": "No freezers, no shortcuts. What doesn't sell by closing feeds our staff family meal or composts back to those farms."
+                }
+            ],
+            "dishes": [
+                {
+                    "id": 1,
+                    "image": "./dinner1.jpeg",
+                    "title": "Lamb Rump with Rosemary",
+                    "category": "Dinner",
+                    "description": "Grass-fed Dorset lamb, slow-roasted over oak with garlic and wild rosemary. Served with parsnip purée and charred spring onions.",
+                    "ingredients": ["Lamb rump", "Rosemary", "Garlic", "Parsnip", "Spring onions", "Oak smoke"],
+                    "chefNote": "We get these lambs from the Henderson farm. They graze on thyme-covered hillsides — you can taste it in the meat.",
+                    "prepTime": "45 min",
+                    "serves": 2
+                },
+                {
+                    "id": 2,
+                    "image": "./dinner2.png",
+                    "title": "Citrus Cured Salmon",
+                    "category": "Dinner",
+                    "description": "Scottish salmon cured for 48 hours in lemon, dill, and juniper. Paper-thin slices with rye crisps and horseradish cream.",
+                    "ingredients": ["Scottish salmon", "Lemon", "Dill", "Juniper berries", "Rye flour", "Horseradish"],
+                    "chefNote": "The cure draws out moisture while the citrus 'cooks' the fish. Texture should be like silk, not raw.",
+                    "prepTime": "48 hr cure",
+                    "serves": 2
+                },
+                {
+                    "id": 3,
+                    "image": "./breakfast1.png",
+                    "title": "Sea Bass with Fennel",
+                    "category": "Breakfast",
+                    "description": "Line-caught bass, pan-seared until skin crackles. Served on braised fennel with saffron broth and roasted cherry tomatoes.",
+                    "ingredients": ["Wild sea bass", "Fennel", "Saffron", "Cherry tomatoes", "White wine", "Fennel fronds"],
+                    "chefNote": "The skin is everything. Score it deep, dry it well, press it down hard in a hot pan. Listen for the crackle.",
+                    "prepTime": "25 min",
+                    "serves": 1
+                },
+                {
+                    "id": 4,
+                    "image": "./dinner3.png",
+                    "title": "Honey Roasted Figs",
+                    "category": "Dinner",
+                    "description": "Black mission figs roasted with thyme honey and mascarpone. Finished with toasted walnuts and aged balsamic.",
+                    "ingredients": ["Black mission figs", "Thyme honey", "Mascarpone", "Walnuts", "Aged balsamic", "Fresh thyme"],
+                    "chefNote": "September through October only. When the figs run out, this comes off the menu. No compromises.",
+                    "prepTime": "15 min",
+                    "serves": 2
+                },
+                {
+                    "id": 5,
+                    "image": "./lunch1.png",
+                    "title": "Brioche Burger",
+                    "category": "Lunch",
+                    "description": "Dry-aged beef patty, caramelized onion jam, and clothbound cheddar. House-made brioche baked every morning.",
+                    "ingredients": ["Dry-aged beef", "Brioche bun", "Cheddar", "Onion jam", "Lettuce", "House pickles"],
+                    "chefNote": "The onion jam takes three hours. We start it before dawn, before the bread goes in the oven.",
+                    "prepTime": "20 min",
+                    "serves": 1
+                },
+                {
+                    "id": 6,
+                    "image": "./dinner4.png",
+                    "title": "Mussels in Cider Broth",
+                    "category": "Dinner",
+                    "description": "Pembrokeshire mussels steamed in dry cider with shallots, parsley, and cultured butter. Grilled sourdough for soaking.",
+                    "ingredients": ["Pembrokeshire mussels", "Dry cider", "Shallots", "Parsley", "Cultured butter", "Sourdough"],
+                    "chefNote": "If a mussel doesn't close when tapped, it goes in the bin. No exceptions. The broth should taste like the sea.",
+                    "prepTime": "15 min",
+                    "serves": 2
+                },
+                {
+                    "id": 7,
+                    "image": "./dinner5.png",
+                    "title": "Hand-Rolled Pappardelle",
+                    "category": "Dinner",
+                    "description": "Wide ribbons of pasta with slow-braised beef shin ragu. Parmesan aged 24 months, grated tableside.",
+                    "ingredients": ["00 flour", "Eggs", "Beef shin", "San Marzano tomatoes", "Red wine", "Parmigiano-Reggiano"],
+                    "chefNote": "My grandmother's recipe. The ragu cooks for six hours until the meat falls apart with a spoon.",
+                    "prepTime": "6 hr braise",
+                    "serves": 2
+                },
+                {
+                    "id": 8,
+                    "image": "./dinner6.png",
+                    "title": "Whole Grilled Sea Bream",
+                    "category": "Dinner",
+                    "description": "Mediterranean sea bream grilled whole with lemon, capers, and olive oil. Served with charred broccoli and aioli.",
+                    "ingredients": ["Whole sea bream", "Lemon", "Capers", "Olive oil", "Broccoli", "Garlic aioli"],
+                    "chefNote": "We score the fish deeply so the heat penetrates evenly. The flesh near the bone should be just translucent.",
+                    "prepTime": "25 min",
+                    "serves": 2
+                }
+                ,{
+                    "id": 9,
+                    "image": "./dinner3.png",
+                    "title": "Wild Mushroom Risotto",
+                    "category": "Dinner",
+                    "description": "Creamy risotto with wild mushrooms, truffle oil, and parmesan. Served with a side of seasonal greens.",
+                    "ingredients": ["Arborio rice", "Wild mushrooms", "Truffle oil", "Parmesan", "White wine", "Vegetable stock"],
+                    "chefNote": "The key is to stir constantly and add the stock gradually. The rice should be creamy but still have a slight bite.",
+                    "prepTime": "30 min",
+                    "serves": 2
+                }
+            ],
+            "team": [
+                {
+                    "id": 1,
+                    "image": "./team_member_1.png",
+                    "name": "Marcus Chen",
+                    "designation": "Head Chef & Owner",
+                    "bio": "Trained at Le Cordon Bleu, then spent five years in Lyon. Opened Savour & Stone in 2019 after realizing he missed the produce of his Yorkshire childhood.",
+                    "quote": "Technique gets you to good. Patience gets you to great."
+                },
+                {
+                    "id": 2,
+                    "image": "./team_member_2.png",
+                    "name": "Elena Vasquez",
+                    "designation": "Sous Chef",
+                    "bio": "Born in Barcelona, raised in Manchester. Specializes in our wood-fired program and makes the best paella you've had outside Valencia.",
+                    "quote": "Fire is alive. You don't control it — you negotiate with it."
+                },
+                {
+                    "id": 3,
+                    "image": "./team_member_3.png",
+                    "name": "James O'Brien",
+                    "designation": "Pastry Chef",
+                    "bio": "Formerly of The Fat Duck. Now he keeps it simple: seasonal fruit, good butter, and sugar that doesn't mask flavor.",
+                    "quote": "Dessert should end the meal, not overwhelm it."
+                },
+                {
+                    "id": 4,
+                    "image": "./team_member_4.png",
+                    "name": "Sarah Kim",
+                    "designation": "Front of House",
+                    "bio": "Wine sommelier with a memory for faces. She remembers your anniversary, your allergies, and exactly how you like your martini.",
+                    "quote": "Hospitality is making people feel at home, even when they've never been here before."
+                }
+            ],
+            "who_we_are": [
+                {
+                    "id": 1,
+                    "number": "14",
+                    "title": "Local Farm Partners"
+                },
+                {
+                    "id": 2,
+                    "number": "04",
+                    "title": "Wood-Fired Ovens"
+                },
+                {
+                    "id": 3,
+                    "number": "06",
+                    "title": "Years in This Location"
+                },
+                {
+                    "id": 4,
+                    "number": "00",
+                    "title": "Freezers On Site"
+                }
+            ],
+            "navbarLinks": [
+                {
+                    "id": 1,
+                    "title": "HOME",
+                    "link": "heroSection"
+                },
+                {
+                    "id": 2,
+                    "title": "OUR STORY",
+                    "link": "about"
+                },
+                {
+                    "id": 3,
+                    "title": "PHILOSOPHY",
+                    "link": "qualities"
+                },
+                {
+                    "id": 4,
+                    "title": "KITCHEN TEAM",
+                    "link": "team"
+                },
+                {
+                    "id": 5,
+                    "title": "RESERVATIONS",
+                    "link": "reservation"
+                }
+            ]
+        }
     ]
 }
