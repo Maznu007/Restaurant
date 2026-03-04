@@ -9,7 +9,7 @@ export const sendReservation = async (req, res, next) => {
   }
 
   try {
-    await Reservation.create({
+    const reservation = await Reservation.create({
       firstName,
       lastName,
       email,
@@ -21,16 +21,10 @@ export const sendReservation = async (req, res, next) => {
     res.status(200).json({
       success: true,
       message: "Reservation created successfully",
+      reservation,
     });
 
   } catch (error) {
-    if (error.name === "ValidationError") {
-      const validationErrors = Object.values(error.errors).map(
-        (err) => err.message
-      );
-      return next(new ErrorHandler(validationErrors, 400));
-    }
-
     return next(error);
   }
 };
