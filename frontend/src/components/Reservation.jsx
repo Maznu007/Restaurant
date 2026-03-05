@@ -1,8 +1,9 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { HiOutlineArrowNarrowRight } from "react-icons/hi";
 import axios from "axios";
 import toast from "react-hot-toast";
 import { useNavigate } from "react-router-dom";
+import { useAuth } from "../context/AuthContext";
 
 const Reservation = () => {
   const [firstName, setFirstName] = useState("");
@@ -11,34 +12,73 @@ const Reservation = () => {
   const [date, setDate] = useState("");
   const [time, setTime] = useState("");
   const [phone, setPhone] = useState("");
+  const [partySize, setPartySize] = useState(2);
+  const [notes, setNotes] = useState("");
 
+  const { user } = useAuth();
   const navigate = useNavigate();
+
+  // Pre-fill user data if logged in
+  useEffect(() => {
+    if (user) {
+      setFirstName(user.firstName);
+      setLastName(user.lastName);
+      setEmail(user.email);
+      setPhone(user.phone);
+    }
+  }, [user]);
 
   const handleReservation = async (e) => {
     e.preventDefault();
 
     try {
+      const payload = {
+        firstName,
+        lastName,
+        email,
+        phone,
+        date,
+        time,
+        partySize,
+        notes
+      };
+
+      // Add user ID if logged in
+      if (user) {
+        payload.userId = user.id;
+      }
+
       const { data } = await axios.post(
         "http://localhost:4000/api/v1/reservation/send",
-        { firstName, lastName, email, phone, date, time },
+        payload,
         {
           headers: {
             "Content-Type": "application/json",
           },
-          withCredentials: true,
         }
       );
 
       toast.success(data.message);
 
-      setFirstName("");
-      setLastName("");
-      setPhone("");
-      setEmail("");
+      // Reset form
+      if (!user) {
+        setFirstName("");
+        setLastName("");
+        setPhone("");
+        setEmail("");
+      }
       setTime("");
       setDate("");
+      setPartySize(2);
+      setNotes("");
 
-      navigate("/success");
+      // Redirect to dashboard if logged in, otherwise success page
+      if (user) {
+        navigate("/dashboard", { state: { activeTab: "reservations" } });
+      } else {
+        navigate("/success");
+      }
+
     } catch (error) {
       toast.error(error.response?.data?.message || "Something went wrong");
     }
@@ -56,7 +96,7 @@ const Reservation = () => {
         <div className="banner">
           <div className="reservation_form_box">
             <h1>RESERVE <span>A TABLE</span></h1>
-            <p>We hold tables for 15 minutes. Please call if you're running late.</p>
+            <p>{user ? `Welcome back, ${user.firstName}` : "We hold tables for 15 minutes. Please call if you're running late."}</p>
 
             <form onSubmit={handleReservation}>
               <div>
@@ -66,6 +106,7 @@ const Reservation = () => {
                   value={firstName}
                   onChange={(e) => setFirstName(e.target.value)}
                   required
+                  readOnly={!!user}
                 />
                 <input
                   type="text"
@@ -73,6 +114,7 @@ const Reservation = () => {
                   value={lastName}
                   onChange={(e) => setLastName(e.target.value)}
                   required
+                  readOnly={!!user}
                 />
               </div>
 
@@ -82,6 +124,7 @@ const Reservation = () => {
                   value={date}
                   onChange={(e) => setDate(e.target.value)}
                   required
+                  min={new Date().toISOString().split('T')[0]}
                 />
                 <input
                   type="time"
@@ -98,6 +141,7 @@ const Reservation = () => {
                   value={email}
                   onChange={(e) => setEmail(e.target.value)}
                   required
+                  readOnly={!!user}
                 />
                 <input
                   type="tel"
@@ -105,6 +149,28 @@ const Reservation = () => {
                   value={phone}
                   onChange={(e) => setPhone(e.target.value)}
                   required
+                  readOnly={!!user}
+                />
+              </div>
+
+              <div>
+                <select 
+                  value={partySize} 
+                  onChange={(e) => setPartySize(Number(e.target.value))}
+                  className="partySizeSelect"
+                >
+                  {[1,2,3,4,5,6,7,8].map(num => (
+                    <option key={num} value={num}>{num} {num === 1 ? 'Person' : 'People'}</option>
+                  ))}
+                </select>
+              </div>
+
+              <div>
+                <textarea
+                  placeholder="Special requests or notes (optional)"
+                  value={notes}
+                  onChange={(e) => setNotes(e.target.value)}
+                  rows="2"
                 />
               </div>
 
