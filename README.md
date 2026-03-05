@@ -1,12 +1,13 @@
 # Savour & Stone — Restaurant Reservation System
 
-A modern, full-stack restaurant web application featuring an elegant dark-themed UI, seamless reservation management, and responsive design. Built with React, Node.js, Express, and MongoDB.
+A modern, full-stack restaurant web application featuring an elegant UI, seamless reservation management, and responsive design. Built with React, Node.js, Express, and MongoDB.
 
-![Savour & Stone Preview](preview.png)
+
+<img width="1911" height="812" alt="image" src="https://github.com/user-attachments/assets/e7570f9a-e3f9-4635-b995-9da4b0e95672" />
+
 
 ## ✨ Features
 
-- **Elegant Dark Theme** — Industrial aesthetic with warm accents, noise textures, and subtle animations
 - **Online Reservations** — Real-time table booking with email validation and phone verification
 - **Interactive Menu** — Hover-reveal dish cards with detailed recipe modals
 - **Responsive Design** — Optimized for desktop, tablet, and mobile devices
@@ -176,7 +177,10 @@ Reservation Schema
   "time": "String (HH:MM)"
 }
 ```
-<img width="1911" height="812" alt="image" src="https://github.com/user-attachments/assets/e7570f9a-e3f9-4635-b995-9da4b0e95672" />
+
+*** Right now Working on the account dashboards and other backend features. ***
+
+
 | -------------------------------------------------------------------------------------------------------------------------------------------- |
 <img width="1142" height="255" alt="image" src="https://github.com/user-attachments/assets/1ca7f400-6788-472a-aa12-fd375b0cd86b" />
 | -------------------------------------------------------------------------------------------------------------------------------------------- |
