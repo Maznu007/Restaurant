@@ -1,194 +1,535 @@
-# Savour & Stone — Restaurant Reservation System
+🍽️ Savour & Stone
 
-A modern, full-stack restaurant web application featuring an elegant UI, seamless reservation management, and responsive design. Built with React, Node.js, Express, and MongoDB.
+------------------
 
+Modern Restaurant Management System (MERN Stack)
 
-<img width="1911" height="812" alt="image" src="https://github.com/user-attachments/assets/e7570f9a-e3f9-4635-b995-9da4b0e95672" />
+A full-stack restaurant management platform built with the MERN stack that enables customers to explore menus, order dishes, book tables, and review meals — while administrators manage restaurant operations through a powerful dashboard.
 
+✨ Live Experience
+----------------
 
-## ✨ Features
+The system provides two separate user experiences:
 
-- **Online Reservations** — Real-time table booking with email validation and phone verification
-- **Interactive Menu** — Hover-reveal dish cards with detailed recipe modals
-- **Responsive Design** — Optimized for desktop, tablet, and mobile devices
-- **Team Showcase** — Staff profiles with hover-activated bios and quotes
-- **Smooth Animations** — GSAP-quality transitions using pure CSS
+👤 Customer Interface
+------------------
 
-## 🛠️ Tech Stack
+Browse menu
 
-**Frontend:**
-- React 18 with Hooks
-- React Router DOM (navigation)
-- React Scroll (smooth scrolling)
-- React Hot Toast (notifications)
-- CSS3 with custom properties & Grid/Flexbox
+Place food orders
 
-**Backend:**
-- Node.js & Express
-- MongoDB with Mongoose
-- Validator.js (input sanitization)
-- CORS enabled
-- Dotenv configuration
+Reserve tables
 
-**Design:**
-- Custom dark theme (#0f0f0f base)
-- Syne & Space Grotesk typography
-- CSS Grid & Flexbox layouts
-- Mobile-first responsive approach
+Write dish reviews
 
-## 🚀 Quick Start
+Track order history
 
-### Prerequisites
-- Node.js (v16+)
-- MongoDB Atlas account or local MongoDB
-- Git
+👨‍🍳 Admin Dashboard
+------------------
 
-### Installation
+Manage orders
 
-1. **Clone the repository**
-   ```bash
-   git clone https://github.com/yourusername/savour-and-stone.git
-   cd savour-and-stone
+Manage reservations
 
-2. Setup Backend -
+Approve or reject reviews
 
+Manage menu items
+
+Monitor restaurant analytics
+
+🧠 System Architecture
+------------------
 ```
-cd backend
-npm install
-
-# Create config.env in backend/config/
-PORT=4000
-FRONTEND_URL=http://localhost:5173
-MONGO_URI=your_mongodb_connection_string
+           React Frontend
+                │
+                │ Axios Requests
+                ▼
+        Express REST API
+                │
+                │ Mongoose ODM
+                ▼
+             MongoDB
 ```
+Flow
+------------------
+1️⃣ User interacts with React UI
+2️⃣ Axios sends API request to backend
+3️⃣ Express handles route + business logic
+4️⃣ MongoDB stores and retrieves data
+5️⃣ Response returned to frontend
 
-3. Setup Frontend -
+🚀 Features
+------------------
+🍔 Customer Features
+🔐 Authentication
 
-```
-cd ../frontend
-npm install
-```
+Secure user registration
 
-4. Run Development Servers -
+Login with JWT authentication
 
-```
-# Terminal 1 - Backend
-cd backend
-npm start
+Protected dashboard routes
 
-# Terminal 2 - Frontend
-cd frontend
-npm run dev
+Persistent login using localStorage
+
+📋 Menu Browsing
+------------------
+Users can:
+
+Browse all restaurant dishes
+
+View dish details
+
+View ingredients
+
+View chef notes
+
+See preparation time
+
+🛒 Food Ordering
+------------------
+Customers can:
+
+Select dish
+
+Choose quantity
+
+Add special instructions
+
+Place orders instantly
+
+Each order contains:
 ```
-5 . Open http://localhost:5173
-📁 Project Structure
+Customer Info
+Ordered Items
+Quantity
+Total Price
+Order Status
+Timestamp
 ```
-savour-and-stone/
-├── backend/
-│   ├── config/
-│   │   └── config.env          # Environment variables
-│   ├── controller/
-│   │   └── reservation.js      # Reservation CRUD logic
-│   ├── database/
-│   │   └── dbConnection.js     # MongoDB connection
-│   ├── error/
-│   │   └── error.js            # Custom error handling
-│   ├── models/
-│   │   └── reservationSchema.js # Mongoose schema
-│   ├── routes/
-│   │   └── reservationRoute.js  # API routes
-│   ├── app.js                  # Express app configuration
-│   └── server.js               # Server entry point
+📅 Table Reservations
+------------------
+Customers can reserve tables by providing:
+
+Name
+
+Email
+
+Phone
+
+Reservation Date
+
+Reservation Time
+
+Party Size
+
+⭐ Dish Reviews
+------------------
+Customers can:
+
+Rate dishes (1–5 stars)
+
+Write feedback
+
+Submit reviews
+
+Reviews require admin approval before appearing publicly.
+
+📊 Personal Dashboard
+------------------
+Users can track:
+
+Order history
+
+Reservations
+
+Reviews
+
+Profile information
+
+🧑‍💼 Admin Dashboard
+------------------
+Admins have full system control.
+
+📈 Analytics Overview
+
+Admin dashboard shows:
+------------------
+Total Orders
+
+Total Reservations
+
+Total Reviews
+
+Total Users
+
+🍽 Menu Management
+------------------
+Admin can:
+
+Add new dishes
+
+Edit dishes
+
+Delete dishes
+
+Toggle availability
+
+Manage ingredients
+
+📦 Order Management
+------------------
+Admin can:
+
+View all customer orders
+
+Monitor order details
+
+Track order status
+
+📅 Reservation Management
+------------------
+Admin can:
+
+View reservations
+
+Check guest details
+
+Monitor booking schedules
+
+⭐ Review Moderation
+------------------
+Admin can:
+
+Approve reviews
+
+Reject inappropriate reviews
+
+👥 User Management
+------------------
+Admin can view:
+
+Registered users
+
+Contact details
+
+Registration date
+
+🧩 Tech Stack
+
+------------------
+
+Frontend
+------------------
+React.js
+
+React Router
+
+Axios
+
+React Icons
+
+React Hot Toast
+
+Vite
+
+Custom CSS Design System
+
+Backend
+------------------
+
+Node.js
+
+Express.js
+
+MongoDB
+
+Mongoose
+
+JWT Authentication
+
+bcrypt password hashing
+
+dotenv
+
+CORS middleware
+
+📂 Project Structure
+------------------
+```
+restaurant-system
 │
-├── frontend/
-│   ├── public/                 # Static assets (images, SVGs)
-│   ├── src/
-│   │   ├── components/
-│   │   │   ├── About.jsx       # Restaurant story section
-│   │   │   ├── Footer.jsx      # Site footer with info
-│   │   │   ├── HeroSection.jsx # Landing hero with CTA
-│   │   │   ├── Menu.jsx        # Interactive dish cards
-│   │   │   ├── Navbar.jsx      # Navigation with smooth scroll
-│   │   │   ├── Qualities.jsx   # Value proposition cards
-│   │   │   ├── Reservation.jsx # Booking form
-│   │   │   ├── Team.jsx        # Staff showcase
-│   │   │   └── WhoAreWe.jsx    # Stats section
-│   │   ├── pages/
-│   │   │   ├── Home/
-│   │   │   │   └── Home.jsx    # Main landing page
-│   │   │   ├── NotFound/
-│   │   │   │   └── NotFound.jsx # 404 error page
-│   │   │   └── Success/
-│   │   │       └── Success.jsx # Post-reservation success
-│   │   ├── App.jsx             # Root component with routing
-│   │   ├── App.css             # Global styles & theme
-│   │   ├── main.jsx            # React entry point
-│   │   └── restApi.json        # Static content data
-│   ├── index.html
-│   └── package.json
+├── backend
+│   ├── middleware
+│   │   └── auth.js
+│   │
+│   ├── models
+│   │   ├── menuItemSchema.js
+│   │   ├── orderSchema.js
+│   │   ├── reservationSchema.js
+│   │   ├── reviewSchema.js
+│   │   └── userSchema.js
+│   │
+│   ├── routes
+│   │   ├── authRoute.js
+│   │   ├── menuRoute.js
+│   │   ├── orderRoute.js
+│   │   ├── reservationRoute.js
+│   │   └── reviewRoute.js
+│   │
+│   ├── controllers
+│   ├── utils
+│   ├── app.js
+│   └── server.js
 │
-└── README.md
+└── frontend
+    └── src
+        ├── components
+        ├── context
+        ├── pages
+        ├── App.jsx
+        ├── main.jsx
+        └── restApi.json
 ```
-
-🎨 Design System
-Color Palette
-| Token                 | Value     | Usage              |
-| --------------------- | --------- | ------------------ |
-| `--color-bg`          | `#0f0f0f` | Primary background |
-| `--color-bg-elevated` | `#1a1a1a` | Cards, sections    |
-| `--color-accent`      | `#e63946` | CTAs, highlights   |
-| `--color-text`        | `#f5f5f5` | Primary text       |
-| `--color-text-muted`  | `#a0a0a0` | Secondary text     |
-| `--color-gold`        | `#d4af37` | Special accents    |
-
-Typography
-
-Display: Syne (700/600) — Headings, buttons
-
-Body: Space Grotesk (400/500) — Paragraphs, labels
-
-Key UI Patterns
-
-Cards: 1px border, hover lift (-5px translateY)
-
-Buttons: Sharp corners, uppercase, letter-spacing
-
-Images: Grayscale default, color on hover
-
-Forms: Bottom-border inputs, minimal labels
-
-
 🔌 API Endpoints
 
-| Method | Endpoint                   | Description                  |
-| ------ | -------------------------- | ---------------------------- |
-| POST   | `/api/v1/reservation/send` | Create new reservation       |
-| GET    | `/api/v1/reservation/all`  | Get all reservations (admin) |
+------------------
 
-Reservation Schema
-
+Authentication
+------------------
 ```
-{
-  "firstName": "String (3-30 chars)",
-  "lastName": "String (3-30 chars)",
-  "email": "String (valid email)",
-  "phone": "String (11 digits)",
-  "date": "String (YYYY-MM-DD)",
-  "time": "String (HH:MM)"
-}
+POST /api/v1/auth/register
+POST /api/v1/auth/login
+GET  /api/v1/auth/me
 ```
+Menu
+------------------
+```
+GET  /api/v1/menu/all
+POST /api/v1/menu
+PUT  /api/v1/menu/:id
+DELETE /api/v1/menu/:id
+```
+Orders
+------------------
+```
+POST /api/v1/orders/create
+GET  /api/v1/orders/my
+GET  /api/v1/orders/all
+```
+Reservations
+------------------
+```
+POST /api/v1/reservation/send
+GET  /api/v1/reservation/my
+GET  /api/v1/reservation/all
+```
+Reviews
+------------------
+```
+POST /api/v1/reviews/create
+GET  /api/v1/reviews
+PUT  /api/v1/reviews/:id
+DELETE /api/v1/reviews/:id
+```
+🌐 Frontend Routes
+------------------
+```
+/            → Home
+/login       → Login Page
+/success     → Order success page
+/dashboard   → Customer dashboard
+/admin       → Admin dashboard
+*            → Not found page
+```
+🔐 Authentication Flow
+------------------
 
-*** Right now Working on the account dashboards and other backend features. ***
+1️⃣ User logs in
+2️⃣ Backend generates JWT token
+3️⃣ Token stored in browser localStorage
+4️⃣ Axios attaches token in headers
+Protected routes verify authentication before allowing access.
+
+🗄 Database Models
+------------------
+
+User
+------------------
+```
+name
+email
+password
+phone
+role (user/admin)
+createdAt
+```
+Menu Item
+------------------
+```
+title
+category
+description
+ingredients
+price
+availability
+image
+rating
+```
+Order
+------------------
+```
+user
+items
+quantity
+notes
+total
+status
+createdAt
+```
+Reservation
+------------------
+```
+name
+email
+phone
+date
+time
+guests
+status
+```
+Review
+------------------
+```
+user
+dish
+rating
+comment
+status
+createdAt
+```
+⚙️ Installation
+
+------------------
+
+Clone repository
+------------------
+```
+git clone https://github.com/yourusername/restaurant-management-system.git
+```
+Backend Setup
+------------------
+```
+cd backend
+npm install
+npm start
+```
+Server runs on
+------------------
+```
+http://localhost:4000
+```
+Frontend Setup
+------------------
+```
+cd frontend
+npm install
+npm run dev
+```
+Frontend runs on
+------------------
+```
+http://localhost:5173
+```
+🔑 Environment Variables
+------------------
+
+Create .env file inside backend.
+```
+PORT=4000
+MONGO_URI=your_mongodb_connection
+JWT_SECRET=your_secret_key
+```
+📊 Future Improvements
+------------------
+
+Possible upgrades:
+
+Online payment integration
+
+Order tracking system
+
+Email notifications
+
+Real-time updates using WebSockets
+
+Image uploads for dishes
+
+Restaurant analytics dashboard
+
+🖼 Screenshots -
+
+------------------
+
+<img width="1917" height="799" alt="image" src="https://github.com/user-attachments/assets/f2b2ebb5-873f-4b3c-96e4-3271fd2d7891" />
+
+------------------
+
+<img width="1913" height="881" alt="image" src="https://github.com/user-attachments/assets/58d12650-1483-47bc-947a-7b3f86a2baa7" />
+
+------------------
+
+<img width="1910" height="893" alt="image" src="https://github.com/user-attachments/assets/f868fc05-cfa1-4218-b28a-3778171de47e" />
+
+------------------
+
+<img width="1912" height="881" alt="image" src="https://github.com/user-attachments/assets/1f226526-bcc0-4a72-b37d-71ab5a8d0169" />
+
+------------------
+
+<img width="1916" height="782" alt="image" src="https://github.com/user-attachments/assets/06ce4f48-2bbe-4ff2-95b7-50aec9c659ac" />
 
 
-| -------------------------------------------------------------------------------------------------------------------------------------------- |
-<img width="1142" height="255" alt="image" src="https://github.com/user-attachments/assets/1ca7f400-6788-472a-aa12-fd375b0cd86b" />
-| -------------------------------------------------------------------------------------------------------------------------------------------- |
-<img width="1274" height="860" alt="image" src="https://github.com/user-attachments/assets/71397073-83bc-4628-8c70-fd95461436e3" />
-| -------------------------------------------------------------------------------------------------------------------------------------------- |
-<img width="1350" height="823" alt="image" src="https://github.com/user-attachments/assets/9282c5cb-bb4d-4a19-a616-3ff87ec4ee9b" />
-| -------------------------------------------------------------------------------------------------------------------------------------------- |
-<img width="886" height="444" alt="image" src="https://github.com/user-attachments/assets/31d011fd-75ae-4ce0-9b4c-2101305612a7" />
-| -------------------------------------------------------------------------------------------------------------------------------------------- |
-<img width="1578" height="858" alt="image" src="https://github.com/user-attachments/assets/63c491c4-15b5-4df0-b959-a063085c33f9" />
-| -------------------------------------------------------------------------------------------------------------------------------------------- |
+------------------
+
+<img width="1912" height="888" alt="5" src="https://github.com/user-attachments/assets/89a868aa-b5a1-4d26-8945-ade43e252836" />
+
+------------------
+
+<img width="1919" height="883" alt="6" src="https://github.com/user-attachments/assets/f0f14453-ff7a-45a6-8133-d2712f71ec77" />
+
+------------------
+
+<img width="1919" height="890" alt="7" src="https://github.com/user-attachments/assets/49ba0bf7-861c-45a2-aefa-6ad9626da79b" />
+
+------------------
+
+<img width="1917" height="890" alt="8" src="https://github.com/user-attachments/assets/3a19d1a1-555b-4c6a-8559-93c799628706" />
+
+------------------
+
+<img width="1919" height="877" alt="9" src="https://github.com/user-attachments/assets/662e913f-21ff-4442-9937-8278defab5c2" />
+
+------------------
+
+<img width="1919" height="882" alt="10" src="https://github.com/user-attachments/assets/7885d600-9a7b-43d4-a5d3-f7e0bd26c15b" />
+
+------------------
+
+<img width="1915" height="881" alt="11" src="https://github.com/user-attachments/assets/efc015be-6996-4686-ad86-b56d01fde35a" />
+
+------------------
+
+<img width="1919" height="889" alt="12" src="https://github.com/user-attachments/assets/dc991234-aa73-4528-939b-80a9d2abee8a" />
+
+------------------
+
+<img width="1919" height="890" alt="13" src="https://github.com/user-attachments/assets/0a4938b1-515e-4ab4-b42f-fc30f04f25de" />
+
+------------------
+
+<img width="1918" height="880" alt="14" src="https://github.com/user-attachments/assets/8d3ba1fc-ec30-48ff-b63c-49a2d85a57d8" />
+
+------------------
+
+
+
