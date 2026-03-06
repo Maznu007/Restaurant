@@ -7,6 +7,7 @@ import NotFound from './pages/NotFound/NotFound';
 import Success from './pages/Success/Success';
 import Login from './pages/Login/Login';
 import Dashboard from './pages/Dashboard/Dashboard';
+import Admin from './pages/Admin/Admin';
 import ProtectedRoute from './components/ProtectedRoute';
 import './App.css';
 
@@ -26,15 +27,11 @@ const App = () => {
               </ProtectedRoute>
             } 
           />
-          {/* Admin route placeholder - will build next */}
           <Route 
             path='/admin' 
             element={
               <ProtectedRoute requireAdmin={true}>
-                <div style={{ padding: "100px", textAlign: "center" }}>
-                  <h1>Admin Dashboard</h1>
-                  <p>Coming in next phase...</p>
-                </div>
+                <Admin />
               </ProtectedRoute>
             } 
           />

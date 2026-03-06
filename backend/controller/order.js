@@ -83,3 +83,72 @@ export const getOrderDetails = async (req, res) => {
     });
   }
 };
+
+// ========== ADMIN FUNCTIONS ==========
+
+// Get all orders (admin only)
+export const getAllOrders = async (req, res) => {
+  try {
+    const { status } = req.query;
+    let query = {};
+    
+    if (status) query.status = status;
+
+    const orders = await Order.find(query)
+      .sort({ createdAt: -1 })
+      .populate("user", "firstName lastName email phone")
+      .populate("items.dishId", "name image");
+
+    res.status(200).json({
+      success: true,
+      count: orders.length,
+      orders,
+    });
+  } catch (error) {
+    console.error("Get all orders error:", error);
+    res.status(500).json({
+      success: false,
+      message: error.message || "Internal server error"
+    });
+  }
+};
+
+// Update order status (admin only)
+export const updateOrderStatus = async (req, res) => {
+  try {
+    const { status } = req.body;
+    
+    const validStatuses = ["pending", "confirmed", "preparing", "ready", "completed", "cancelled"];
+    if (!validStatuses.includes(status)) {
+      return res.status(400).json({
+        success: false,
+        message: "Invalid status"
+      });
+    }
+
+    const order = await Order.findByIdAndUpdate(
+      req.params.id,
+      { status, updatedAt: Date.now() },
+      { new: true }
+    ).populate("user", "firstName lastName email");
+
+    if (!order) {
+      return res.status(404).json({
+        success: false,
+        message: "Order not found"
+      });
+    }
+
+    res.status(200).json({
+      success: true,
+      message: "Order status updated",
+      order,
+    });
+  } catch (error) {
+    console.error("Update order status error:", error);
+    res.status(500).json({
+      success: false,
+      message: error.message || "Internal server error"
+    });
+  }
+};

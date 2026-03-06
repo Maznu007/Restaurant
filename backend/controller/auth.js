@@ -161,3 +161,83 @@ export const logout = async (req, res, next) => {
     message: "Logged out successfully",
   });
 };
+
+// ========== ADMIN FUNCTIONS ==========
+
+// Get all users (admin only)
+export const getAllUsers = async (req, res) => {
+  try {
+    const users = await User.find({ role: "customer" })
+      .select("-password")
+      .sort({ createdAt: -1 });
+
+    res.status(200).json({
+      success: true,
+      count: users.length,
+      users,
+    });
+  } catch (error) {
+    console.error("Get all users error:", error);
+    res.status(500).json({
+      success: false,
+      message: error.message || "Internal server error"
+    });
+  }
+};
+
+// Get dashboard stats (admin only)
+export const getDashboardStats = async (req, res) => {
+  try {
+    const User = (await import("../models/userSchema.js")).default;
+    const Order = (await import("../models/orderSchema.js")).default;
+    const Reservation = (await import("../models/reservationSchema.js")).default;
+    const Review = (await import("../models/reviewSchema.js")).default;
+
+    const [
+      totalUsers,
+      totalOrders,
+      totalReservations,
+      totalReviews,
+      pendingOrders,
+      pendingReservations,
+      pendingReviews,
+      todayOrders
+    ] = await Promise.all([
+      User.countDocuments({ role: "customer" }),
+      Order.countDocuments(),
+      Reservation.countDocuments(),
+      Review.countDocuments(),
+      Order.countDocuments({ status: "pending" }),
+      Reservation.countDocuments({ status: "pending" }),
+      Review.countDocuments({ isApproved: false }),
+      Order.countDocuments({
+        createdAt: { $gte: new Date(Date.now() - 24 * 60 * 60 * 1000) }
+      })
+    ]);
+
+    // Calculate total revenue
+    const orders = await Order.find({ status: { $ne: "cancelled" } });
+    const totalRevenue = orders.reduce((acc, order) => acc + order.totalAmount, 0);
+
+    res.status(200).json({
+      success: true,
+      stats: {
+        totalUsers,
+        totalOrders,
+        totalReservations,
+        totalReviews,
+        pendingOrders,
+        pendingReservations,
+        pendingReviews,
+        todayOrders,
+        totalRevenue: Math.round(totalRevenue * 100) / 100
+      }
+    });
+  } catch (error) {
+    console.error("Get dashboard stats error:", error);
+    res.status(500).json({
+      success: false,
+      message: error.message || "Internal server error"
+    });
+  }
+};
