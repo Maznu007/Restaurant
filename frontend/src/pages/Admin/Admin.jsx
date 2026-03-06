@@ -10,12 +10,11 @@ import {
   HiOutlineUsers,
   HiOutlineCurrencyDollar,
   HiOutlineClipboardList,
-  HiOutlineCheckCircle,
-  HiOutlineXCircle,
-  HiOutlineChevronRight,
-  HiOutlineTrash,
-  HiOutlinePencil,
-  HiOutlinePlus
+  HiOutlineCheck,
+  HiOutlineX,
+  HiOutlinePlus,
+  HiOutlineFilter,
+  HiOutlineEye
 } from "react-icons/hi";
 import toast from "react-hot-toast";
 
@@ -40,6 +39,7 @@ const Admin = () => {
   const [menuItems, setMenuItems] = useState([]);
   const [users, setUsers] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [filterStatus, setFilterStatus] = useState("all");
 
   useEffect(() => {
     if (!user) {
@@ -84,6 +84,7 @@ const Admin = () => {
     try {
       const { data } = await axios.get("http://localhost:4000/api/v1/orders/admin/all");
       setOrders(data.orders || []);
+      setFilterStatus("all");
     } catch (error) {
       console.error("Orders error:", error);
     }
@@ -93,6 +94,7 @@ const Admin = () => {
     try {
       const { data } = await axios.get("http://localhost:4000/api/v1/reservation/admin/all");
       setReservations(data.reservations || []);
+      setFilterStatus("all");
     } catch (error) {
       console.error("Reservations error:", error);
     }
@@ -102,6 +104,7 @@ const Admin = () => {
     try {
       const { data } = await axios.get("http://localhost:4000/api/v1/reviews/admin/all");
       setReviews(data.reviews || []);
+      setFilterStatus("all");
     } catch (error) {
       console.error("Reviews error:", error);
     }
@@ -213,6 +216,23 @@ const Admin = () => {
     });
   };
 
+  const getFilteredOrders = () => {
+    if (filterStatus === "all") return orders;
+    return orders.filter(o => o.status === filterStatus);
+  };
+
+  const getFilteredReservations = () => {
+    if (filterStatus === "all") return reservations;
+    return reservations.filter(r => r.status === filterStatus);
+  };
+
+  const getFilteredReviews = () => {
+    if (filterStatus === "all") return reviews;
+    if (filterStatus === "pending") return reviews.filter(r => !r.isApproved);
+    if (filterStatus === "approved") return reviews.filter(r => r.isApproved);
+    return reviews;
+  };
+
   const pendingOrders = orders.filter(o => o.status === "pending");
   const pendingReservations = reservations.filter(r => r.status === "pending");
   const pendingReviews = reviews.filter(r => !r.isApproved);
@@ -250,21 +270,21 @@ const Admin = () => {
             </button>
             <button 
               className={activeTab === "orders" ? "active" : ""}
-              onClick={() => setActiveTab("orders")}
+              onClick={() => { setActiveTab("orders"); setFilterStatus("all"); }}
             >
               <HiOutlineShoppingBag />
               <span>Orders ({pendingOrders.length} pending)</span>
             </button>
             <button 
               className={activeTab === "reservations" ? "active" : ""}
-              onClick={() => setActiveTab("reservations")}
+              onClick={() => { setActiveTab("reservations"); setFilterStatus("all"); }}
             >
               <HiOutlineCalendar />
               <span>Reservations ({pendingReservations.length} pending)</span>
             </button>
             <button 
               className={activeTab === "reviews" ? "active" : ""}
-              onClick={() => setActiveTab("reviews")}
+              onClick={() => { setActiveTab("reviews"); setFilterStatus("all"); }}
             >
               <HiOutlineStar />
               <span>Reviews ({pendingReviews.length} pending)</span>
@@ -374,64 +394,73 @@ const Admin = () => {
               <div className="recentSection">
                 <h3>Pending Approvals</h3>
                 <div className="pendingGrid">
-                  {pendingOrders.slice(0, 3).map((order) => (
+                  {pendingOrders.slice(0, 2).map((order) => (
                     <div key={order._id} className="pendingCard order">
-                      <div className="pendingIcon" style={{ background: getStatusColor(order.status) }}>
-                        <HiOutlineShoppingBag />
+                      <div className="pendingCardHeader">
+                        <div className="pendingIcon" style={{ background: getStatusColor(order.status) }}>
+                          <HiOutlineShoppingBag />
+                        </div>
+                        <span className="pendingType">Order</span>
                       </div>
                       <div className="pendingContent">
                         <h4>Order #{order._id.slice(-6).toUpperCase()}</h4>
-                        <p>{order.items?.length || 0} items • ${order.totalAmount}</p>
-                        <p className="customer">By: {order.user?.firstName} {order.user?.lastName}</p>
+                        <p className="pendingDetail">{order.items?.length || 0} items • ${order.totalAmount}</p>
+                        <p className="pendingCustomer">{order.user?.firstName} {order.user?.lastName}</p>
                       </div>
                       <div className="pendingActions">
-                        <button onClick={() => updateOrderStatus(order._id, "confirmed")}>
-                          <HiOutlineCheckCircle />
+                        <button className="btn-icon btn-approve" onClick={() => updateOrderStatus(order._id, "confirmed")}>
+                          <HiOutlineCheck />
                         </button>
-                        <button onClick={() => updateOrderStatus(order._id, "cancelled")} className="reject">
-                          <HiOutlineXCircle />
+                        <button className="btn-icon btn-reject" onClick={() => updateOrderStatus(order._id, "cancelled")}>
+                          <HiOutlineX />
                         </button>
                       </div>
                     </div>
                   ))}
                   
-                  {pendingReservations.slice(0, 3).map((res) => (
+                  {pendingReservations.slice(0, 2).map((res) => (
                     <div key={res._id} className="pendingCard reservation">
-                      <div className="pendingIcon" style={{ background: getStatusColor(res.status) }}>
-                        <HiOutlineCalendar />
+                      <div className="pendingCardHeader">
+                        <div className="pendingIcon" style={{ background: getStatusColor(res.status) }}>
+                          <HiOutlineCalendar />
+                        </div>
+                        <span className="pendingType">Reservation</span>
                       </div>
                       <div className="pendingContent">
-                        <h4>Reservation for {res.firstName} {res.lastName}</h4>
-                        <p>{res.date} at {res.time}</p>
-                        <p className="customer">{res.partySize} guests • {res.phone}</p>
+                        <h4>{res.firstName} {res.lastName}</h4>
+                        <p className="pendingDetail">{res.date} at {res.time}</p>
+                        <p className="pendingCustomer">{res.partySize} guests • {res.phone}</p>
                       </div>
                       <div className="pendingActions">
-                        <button onClick={() => updateReservationStatus(res._id, "confirmed")}>
-                          <HiOutlineCheckCircle />
+                        <button className="btn-icon btn-approve" onClick={() => updateReservationStatus(res._id, "confirmed")}>
+                          <HiOutlineCheck />
                         </button>
-                        <button onClick={() => updateReservationStatus(res._id, "cancelled")} className="reject">
-                          <HiOutlineXCircle />
+                        <button className="btn-icon btn-reject" onClick={() => updateReservationStatus(res._id, "cancelled")}>
+                          <HiOutlineX />
                         </button>
                       </div>
                     </div>
                   ))}
                   
-                  {pendingReviews.slice(0, 3).map((review) => (
+                  {pendingReviews.slice(0, 2).map((review) => (
                     <div key={review._id} className="pendingCard review">
-                      <div className="pendingIcon">
-                        <HiOutlineStar />
+                      <div className="pendingCardHeader">
+                        <div className="pendingIcon" style={{ background: "var(--color-gold)" }}>
+                          <HiOutlineStar />
+                        </div>
+                        <span className="pendingType">Review</span>
                       </div>
                       <div className="pendingContent">
-                        <h4>Review for {review.dish?.name}</h4>
-                        <p>{"★".repeat(review.rating)}{"☆".repeat(5 - review.rating)}</p>
-                        <p className="customer">By: {review.user?.firstName} {review.user?.lastName}</p>
+                        <h4>{review.dish?.name}</h4>
+                        <p className="pendingDetail stars">{"★".repeat(review.rating)}{"☆".repeat(5 - review.rating)}</p>
+                        <p className="pendingCustomer">{review.user?.firstName} {review.user?.lastName}</p>
                       </div>
                       <div className="pendingActions">
-                        <button onClick={() => updateReviewStatus(review._id, true)}>
-                          <HiOutlineCheckCircle />
+                        <button className="btn-icon btn-approve" onClick={() => updateReviewStatus(review._id, true)}>
+                          <HiOutlineCheck />
                         </button>
-                        <button onClick={() => updateReviewStatus(review._id, false)} className="reject">
-                          <HiOutlineXCircle />
+                        <button className="btn-icon btn-reject" onClick={() => updateReviewStatus(review._id, false)}>
+                          <HiOutlineX />
                         </button>
                       </div>
                     </div>
@@ -439,7 +468,8 @@ const Admin = () => {
                   
                   {pendingOrders.length === 0 && pendingReservations.length === 0 && pendingReviews.length === 0 && (
                     <div className="emptyPending">
-                      <p>No pending approvals. All caught up!</p>
+                      <div className="emptyIcon">✓</div>
+                      <p>All caught up! No pending approvals.</p>
                     </div>
                   )}
                 </div>
@@ -451,29 +481,75 @@ const Admin = () => {
             <div className="dashboardSection">
               <div className="sectionHeader">
                 <h1>All Orders</h1>
-                <div className="filterTabs">
-                  <button onClick={fetchOrders}>All ({orders.length})</button>
-                  <button onClick={() => setOrders(orders.filter(o => o.status === "pending"))}>
-                    Pending ({pendingOrders.length})
-                  </button>
+                <div className="filterBar">
+                  <HiOutlineFilter className="filterIcon" />
+                  <div className="filterTabs">
+                    <button 
+                      className={filterStatus === "all" ? "active" : ""} 
+                      onClick={() => setFilterStatus("all")}
+                    >
+                      All <span className="count">{orders.length}</span>
+                    </button>
+                    <button 
+                      className={filterStatus === "pending" ? "active" : ""} 
+                      onClick={() => setFilterStatus("pending")}
+                    >
+                      Pending <span className="count">{orders.filter(o => o.status === "pending").length}</span>
+                    </button>
+                    <button 
+                      className={filterStatus === "confirmed" ? "active" : ""} 
+                      onClick={() => setFilterStatus("confirmed")}
+                    >
+                      Confirmed <span className="count">{orders.filter(o => o.status === "confirmed").length}</span>
+                    </button>
+                    <button 
+                      className={filterStatus === "preparing" ? "active" : ""} 
+                      onClick={() => setFilterStatus("preparing")}
+                    >
+                      Preparing <span className="count">{orders.filter(o => o.status === "preparing").length}</span>
+                    </button>
+                    <button 
+                      className={filterStatus === "ready" ? "active" : ""} 
+                      onClick={() => setFilterStatus("ready")}
+                    >
+                      Ready <span className="count">{orders.filter(o => o.status === "ready").length}</span>
+                    </button>
+                    <button 
+                      className={filterStatus === "completed" ? "active" : ""} 
+                      onClick={() => setFilterStatus("completed")}
+                    >
+                      Completed <span className="count">{orders.filter(o => o.status === "completed").length}</span>
+                    </button>
+                    <button 
+                      className={filterStatus === "cancelled" ? "active" : ""} 
+                      onClick={() => setFilterStatus("cancelled")}
+                    >
+                      Cancelled <span className="count">{orders.filter(o => o.status === "cancelled").length}</span>
+                    </button>
+                  </div>
                 </div>
               </div>
               
-              <div className="ordersList adminList">
-                {orders.map((order) => (
-                  <div key={order._id} className="detailCard adminCard">
+              <div className="adminList">
+                {getFilteredOrders().map((order) => (
+                  <div key={order._id} className="adminCard">
                     <div className="cardHeader">
-                      <div>
-                        <h4>Order #{order._id.slice(-6).toUpperCase()}</h4>
-                        <span className="timestamp">{formatDate(order.createdAt)} at {formatTime(order.createdAt)}</span>
-                        <p className="customerInfo">
-                          By: <strong>{order.user?.firstName} {order.user?.lastName}</strong> • {order.user?.email} • {order.user?.phone}
-                        </p>
+                      <div className="orderInfo">
+                        <div className="orderId">
+                          <span className="label">Order</span>
+                          <h4>#{order._id.slice(-6).toUpperCase()}</h4>
+                        </div>
+                        <div className="orderMeta">
+                          <span className="date">{formatDate(order.createdAt)} at {formatTime(order.createdAt)}</span>
+                          <span className="customer">{order.user?.firstName} {order.user?.lastName}</span>
+                          <span className="contact">{order.user?.email} • {order.user?.phone}</span>
+                        </div>
                       </div>
                       <span className="statusBadge" style={{ background: getStatusColor(order.status) }}>
                         {order.status}
                       </span>
                     </div>
+                    
                     <div className="cardBody">
                       <div className="itemsList">
                         {order.items?.map((item, idx) => (
@@ -486,41 +562,50 @@ const Admin = () => {
                       </div>
                       {order.specialInstructions && (
                         <div className="specialNotes">
-                          <strong>Special Instructions:</strong> {order.specialInstructions}
+                          <strong>Note:</strong> {order.specialInstructions}
                         </div>
                       )}
                     </div>
-                    <div className="cardFooter adminFooter">
-                      <div className="meta">
-                        <span>Type: {order.orderType}</span>
-                        {order.pickupTime && <span>Pickup: {formatDate(order.pickupTime)} {formatTime(order.pickupTime)}</span>}
+                    
+                    <div className="cardFooter">
+                      <div className="orderDetails">
+                        <span className="detail"><strong>Type:</strong> {order.orderType}</span>
+                        {order.pickupTime && (
+                          <span className="detail"><strong>Pickup:</strong> {formatDate(order.pickupTime)} {formatTime(order.pickupTime)}</span>
+                        )}
                       </div>
-                      <div className="adminActions">
-                        <span className="total">Total: <strong>${order.totalAmount?.toFixed(2)}</strong></span>
+                      <div className="actionButtons">
+                        <span className="totalAmount">${order.totalAmount?.toFixed(2)}</span>
                         {order.status === "pending" && (
                           <>
-                            <button className="approveBtn" onClick={() => updateOrderStatus(order._id, "confirmed")}>
+                            <button className="btn btn-primary" onClick={() => updateOrderStatus(order._id, "confirmed")}>
                               Confirm
                             </button>
-                            <button className="rejectBtn" onClick={() => updateOrderStatus(order._id, "cancelled")}>
+                            <button className="btn btn-danger" onClick={() => updateOrderStatus(order._id, "cancelled")}>
                               Cancel
                             </button>
                           </>
                         )}
                         {order.status === "confirmed" && (
-                          <button className="actionBtn" onClick={() => updateOrderStatus(order._id, "preparing")}>
+                          <button className="btn btn-primary" onClick={() => updateOrderStatus(order._id, "preparing")}>
                             Start Preparing
                           </button>
                         )}
                         {order.status === "preparing" && (
-                          <button className="actionBtn" onClick={() => updateOrderStatus(order._id, "ready")}>
+                          <button className="btn btn-primary" onClick={() => updateOrderStatus(order._id, "ready")}>
                             Mark Ready
                           </button>
                         )}
                         {order.status === "ready" && (
-                          <button className="approveBtn" onClick={() => updateOrderStatus(order._id, "completed")}>
+                          <button className="btn btn-success" onClick={() => updateOrderStatus(order._id, "completed")}>
                             Complete
                           </button>
+                        )}
+                        {order.status === "completed" && (
+                          <span className="completedBadge">✓ Completed</span>
+                        )}
+                        {order.status === "cancelled" && (
+                          <span className="cancelledBadge">✗ Cancelled</span>
                         )}
                       </div>
                     </div>
@@ -534,58 +619,117 @@ const Admin = () => {
             <div className="dashboardSection">
               <div className="sectionHeader">
                 <h1>All Reservations</h1>
-                <div className="filterTabs">
-                  <button onClick={fetchReservations}>All ({reservations.length})</button>
-                  <button onClick={() => setReservations(reservations.filter(r => r.status === "pending"))}>
-                    Pending ({pendingReservations.length})
-                  </button>
+                <div className="filterBar">
+                  <HiOutlineFilter className="filterIcon" />
+                  <div className="filterTabs">
+                    <button 
+                      className={filterStatus === "all" ? "active" : ""} 
+                      onClick={() => setFilterStatus("all")}
+                    >
+                      All <span className="count">{reservations.length}</span>
+                    </button>
+                    <button 
+                      className={filterStatus === "pending" ? "active" : ""} 
+                      onClick={() => setFilterStatus("pending")}
+                    >
+                      Pending <span className="count">{reservations.filter(r => r.status === "pending").length}</span>
+                    </button>
+                    <button 
+                      className={filterStatus === "confirmed" ? "active" : ""} 
+                      onClick={() => setFilterStatus("confirmed")}
+                    >
+                      Confirmed <span className="count">{reservations.filter(r => r.status === "confirmed").length}</span>
+                    </button>
+                    <button 
+                      className={filterStatus === "seated" ? "active" : ""} 
+                      onClick={() => setFilterStatus("seated")}
+                    >
+                      Seated <span className="count">{reservations.filter(r => r.status === "seated").length}</span>
+                    </button>
+                    <button 
+                      className={filterStatus === "completed" ? "active" : ""} 
+                      onClick={() => setFilterStatus("completed")}
+                    >
+                      Completed <span className="count">{reservations.filter(r => r.status === "completed").length}</span>
+                    </button>
+                    <button 
+                      className={filterStatus === "cancelled" ? "active" : ""} 
+                      onClick={() => setFilterStatus("cancelled")}
+                    >
+                      Cancelled <span className="count">{reservations.filter(r => r.status === "cancelled").length}</span>
+                    </button>
+                  </div>
                 </div>
               </div>
               
-              <div className="reservationsList adminList">
-                {reservations.map((res) => (
-                  <div key={res._id} className="detailCard adminCard">
+              <div className="adminList">
+                {getFilteredReservations().map((res) => (
+                  <div key={res._id} className="adminCard">
                     <div className="cardHeader">
-                      <div>
-                        <h4>Reservation for {res.firstName} {res.lastName}</h4>
-                        <span className="timestamp">{res.date} at {res.time}</span>
-                        <p className="customerInfo">
-                          {res.email} • {res.phone}
-                        </p>
+                      <div className="reservationInfo">
+                        <div className="reservationName">
+                          <span className="label">Reservation</span>
+                          <h4>{res.firstName} {res.lastName}</h4>
+                        </div>
+                        <div className="reservationMeta">
+                          <span className="dateTime">{res.date} at {res.time}</span>
+                          <span className="contact">{res.email} • {res.phone}</span>
+                        </div>
                       </div>
                       <span className="statusBadge" style={{ background: getStatusColor(res.status || "pending") }}>
                         {res.status || "Pending"}
                       </span>
                     </div>
+                    
                     <div className="cardBody">
-                      <div className="resDetails">
-                        <p><strong>Party Size:</strong> {res.partySize || "Not specified"} guests</p>
-                        {res.notes && <p><strong>Notes:</strong> {res.notes}</p>}
-                        {res.user && <p><strong>Registered User:</strong> Yes</p>}
+                      <div className="reservationDetails">
+                        <div className="detailItem">
+                          <span className="detailLabel">Party Size</span>
+                          <span className="detailValue">{res.partySize || "Not specified"} guests</span>
+                        </div>
+                        {res.notes && (
+                          <div className="detailItem full">
+                            <span className="detailLabel">Special Requests</span>
+                            <span className="detailValue">{res.notes}</span>
+                          </div>
+                        )}
+                        {res.user && (
+                          <div className="detailItem">
+                            <span className="detailLabel">User Type</span>
+                            <span className="detailValue registered">Registered Member</span>
+                          </div>
+                        )}
                       </div>
                     </div>
-                    <div className="cardFooter adminFooter">
-                      <span className="timestamp">Booked on {formatDate(res.createdAt)}</span>
-                      <div className="adminActions">
+                    
+                    <div className="cardFooter">
+                      <span className="bookedDate">Booked on {formatDate(res.createdAt)}</span>
+                      <div className="actionButtons">
                         {(res.status === "pending" || !res.status) && (
                           <>
-                            <button className="approveBtn" onClick={() => updateReservationStatus(res._id, "confirmed")}>
+                            <button className="btn btn-primary" onClick={() => updateReservationStatus(res._id, "confirmed")}>
                               Confirm
                             </button>
-                            <button className="rejectBtn" onClick={() => updateReservationStatus(res._id, "cancelled")}>
+                            <button className="btn btn-danger" onClick={() => updateReservationStatus(res._id, "cancelled")}>
                               Cancel
                             </button>
                           </>
                         )}
                         {res.status === "confirmed" && (
-                          <button className="actionBtn" onClick={() => updateReservationStatus(res._id, "seated")}>
+                          <button className="btn btn-primary" onClick={() => updateReservationStatus(res._id, "seated")}>
                             Mark Seated
                           </button>
                         )}
                         {res.status === "seated" && (
-                          <button className="approveBtn" onClick={() => updateReservationStatus(res._id, "completed")}>
+                          <button className="btn btn-success" onClick={() => updateReservationStatus(res._id, "completed")}>
                             Complete
                           </button>
+                        )}
+                        {res.status === "completed" && (
+                          <span className="completedBadge">✓ Completed</span>
+                        )}
+                        {res.status === "cancelled" && (
+                          <span className="cancelledBadge">✗ Cancelled</span>
                         )}
                       </div>
                     </div>
@@ -599,52 +743,66 @@ const Admin = () => {
             <div className="dashboardSection">
               <div className="sectionHeader">
                 <h1>All Reviews</h1>
-                <div className="filterTabs">
-                  <button onClick={fetchReviews}>All ({reviews.length})</button>
-                  <button onClick={() => setReviews(reviews.filter(r => !r.isApproved))}>
-                    Pending ({pendingReviews.length})
-                  </button>
-                  <button onClick={() => setReviews(reviews.filter(r => r.isApproved))}>
-                    Approved ({reviews.filter(r => r.isApproved).length})
-                  </button>
+                <div className="filterBar">
+                  <HiOutlineFilter className="filterIcon" />
+                  <div className="filterTabs">
+                    <button 
+                      className={filterStatus === "all" ? "active" : ""} 
+                      onClick={() => setFilterStatus("all")}
+                    >
+                      All <span className="count">{reviews.length}</span>
+                    </button>
+                    <button 
+                      className={filterStatus === "pending" ? "active" : ""} 
+                      onClick={() => setFilterStatus("pending")}
+                    >
+                      Pending <span className="count">{pendingReviews.length}</span>
+                    </button>
+                    <button 
+                      className={filterStatus === "approved" ? "active" : ""} 
+                      onClick={() => setFilterStatus("approved")}
+                    >
+                      Approved <span className="count">{reviews.filter(r => r.isApproved).length}</span>
+                    </button>
+                  </div>
                 </div>
               </div>
               
-              <div className="reviewsList adminList">
-                {reviews.map((review) => (
-                  <div key={review._id} className="detailCard adminCard reviewCard">
+              <div className="adminList">
+                {getFilteredReviews().map((review) => (
+                  <div key={review._id} className="adminCard reviewCard">
                     <div className="cardHeader">
-                      <div className="reviewDish">
+                      <div className="reviewInfo">
                         <img src={review.dish?.image || "/default-dish.png"} alt={review.dish?.name} />
-                        <div>
+                        <div className="reviewMeta">
                           <h4>{review.dish?.name}</h4>
                           <div className="stars">{"★".repeat(review.rating)}{"☆".repeat(5 - review.rating)}</div>
-                          <p className="customerInfo">
-                            By: <strong>{review.user?.firstName} {review.user?.lastName}</strong> • {review.user?.email}
-                          </p>
+                          <span className="reviewer">By {review.user?.firstName} {review.user?.lastName} • {review.user?.email}</span>
                         </div>
                       </div>
                       <span className={`statusBadge ${review.isApproved ? "approved" : "pending"}`}>
                         {review.isApproved ? "Approved" : "Pending"}
                       </span>
                     </div>
+                    
                     <div className="cardBody">
                       <p className="reviewText">"{review.comment}"</p>
                     </div>
-                    <div className="cardFooter adminFooter">
-                      <span className="timestamp">Posted on {formatDate(review.createdAt)}</span>
-                      <div className="adminActions">
+                    
+                    <div className="cardFooter">
+                      <span className="postedDate">Posted on {formatDate(review.createdAt)}</span>
+                      <div className="actionButtons">
                         {!review.isApproved ? (
-                          <button className="approveBtn" onClick={() => updateReviewStatus(review._id, true)}>
+                          <button className="btn btn-success" onClick={() => updateReviewStatus(review._id, true)}>
                             Approve
                           </button>
                         ) : (
-                          <button className="actionBtn" onClick={() => updateReviewStatus(review._id, false)}>
+                          <button className="btn btn-secondary" onClick={() => updateReviewStatus(review._id, false)}>
                             Unapprove
                           </button>
                         )}
-                        <button className="rejectBtn" onClick={() => deleteReview(review._id)}>
-                          <HiOutlineTrash /> Delete
+                        <button className="btn btn-danger btn-icon-only" onClick={() => deleteReview(review._id)}>
+                          <HiOutlineX />
                         </button>
                       </div>
                     </div>
@@ -658,45 +816,57 @@ const Admin = () => {
             <div className="dashboardSection">
               <div className="sectionHeader">
                 <h1>Menu Management</h1>
-                <button className="actionBtn" onClick={() => toast.info("Add menu item - implement modal or navigate to form")}>
-                  <HiOutlinePlus /> Add Item
+                <button className="btn btn-primary btn-with-icon" onClick={() => toast.info("Add menu item feature coming soon")}>
+                  <HiOutlinePlus /> Add New Item
                 </button>
               </div>
               
-              <div className="menuList adminList">
+              <div className="adminList menuList">
                 {menuItems.map((item) => (
-                  <div key={item._id} className="detailCard adminCard menuCard">
+                  <div key={item._id} className="adminCard menuCard">
                     <div className="cardHeader">
-                      <div className="menuItemInfo">
+                      <div className="menuItemHeader">
                         <img src={item.image} alt={item.name} />
-                        <div>
-                          <h4>{item.name}</h4>
-                          <p className="category">{item.category} {item.isSpecial && "• Special"}</p>
-                          <p className="price">${item.price}</p>
+                        <div className="menuItemDetails">
+                          <div className="menuItemTitle">
+                            <h4>{item.name}</h4>
+                            {item.isSpecial && <span className="specialBadge">Special</span>}
+                          </div>
+                          <span className="category">{item.category}</span>
+                          <span className="price">${item.price.toFixed(2)}</span>
                         </div>
                       </div>
-                      <span className={`statusBadge ${item.isAvailable ? "approved" : "pending"}`}>
+                      <span className={`statusBadge ${item.isAvailable ? "available" : "unavailable"}`}>
                         {item.isAvailable ? "Available" : "Unavailable"}
                       </span>
                     </div>
+                    
                     <div className="cardBody">
                       <p className="description">{item.description}</p>
-                      <p className="ingredients"><strong>Ingredients:</strong> {item.ingredients?.join(", ")}</p>
-                      {item.dietaryTags?.length > 0 && (
-                        <p className="tags"><strong>Tags:</strong> {item.dietaryTags.join(", ")}</p>
-                      )}
-                      <p className="rating">★ {item.averageRating || 0} ({item.reviewCount || 0} reviews)</p>
+                      <div className="menuMeta">
+                        <span><strong>Ingredients:</strong> {item.ingredients?.join(", ")}</span>
+                        {item.dietaryTags?.length > 0 && (
+                          <span><strong>Dietary:</strong> {item.dietaryTags.join(", ")}</span>
+                        )}
+                        <span className="rating">★ {item.averageRating?.toFixed(1) || 0} ({item.reviewCount || 0} reviews)</span>
+                      </div>
                     </div>
-                    <div className="cardFooter adminFooter">
+                    
+                    <div className="cardFooter">
                       <button 
-                        className="actionBtn" 
+                        className={`btn ${item.isAvailable ? 'btn-warning' : 'btn-success'}`}
                         onClick={() => toggleMenuAvailability(item._id, item.isAvailable)}
                       >
                         {item.isAvailable ? "Mark Unavailable" : "Mark Available"}
                       </button>
-                      <button className="editBtn">
-                        <HiOutlinePencil /> Edit
-                      </button>
+                      <div className="actionButtons">
+                        <button className="btn btn-secondary btn-icon-only">
+                          <HiOutlineEye />
+                        </button>
+                        <button className="btn btn-secondary btn-icon-only">
+                          <HiOutlineFilter />
+                        </button>
+                      </div>
                     </div>
                   </div>
                 ))}
@@ -708,26 +878,25 @@ const Admin = () => {
             <div className="dashboardSection">
               <div className="sectionHeader">
                 <h1>Customer Management</h1>
-                <p>Total registered customers: {users.length}</p>
+                <p className="subtitle">Total registered customers: {users.length}</p>
               </div>
               
-              <div className="usersList adminList">
+              <div className="adminList usersList">
                 {users.map((userItem) => (
-                  <div key={userItem._id} className="detailCard adminCard userCard">
-                    <div className="cardHeader">
-                      <div className="userInfoDisplay">
-                        <div className="userAvatarSmall">
-                          {userItem.firstName[0]}{userItem.lastName[0]}
-                        </div>
-                        <div>
-                          <h4>{userItem.firstName} {userItem.lastName}</h4>
-                          <p>{userItem.email}</p>
-                          <p>{userItem.phone}</p>
-                        </div>
+                  <div key={userItem._id} className="adminCard userCard">
+                    <div className="userContent">
+                      <div className="userAvatarSmall">
+                        {userItem.firstName[0]}{userItem.lastName[0]}
+                      </div>
+                      <div className="userDetails">
+                        <h4>{userItem.firstName} {userItem.lastName}</h4>
+                        <p className="userEmail">{userItem.email}</p>
+                        <p className="userPhone">{userItem.phone}</p>
                       </div>
                     </div>
-                    <div className="cardFooter">
-                      <span className="timestamp">Joined {formatDate(userItem.createdAt)}</span>
+                    <div className="userMeta">
+                      <span className="joinedDate">Joined {formatDate(userItem.createdAt)}</span>
+                      <button className="btn btn-secondary btn-sm">View Details</button>
                     </div>
                   </div>
                 ))}
