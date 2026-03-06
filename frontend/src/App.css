@@ -55,14 +55,19 @@ body::before {
 /* ─── NAVIGATION ─────────────────────────────────── */
 nav {
   display: flex;
-  justify-content: space-between;
   align-items: center;
-  max-width: var(--max);
-  margin: 0 auto;
+  justify-content: space-between;
+  width: 100%;
   padding: 30px 60px;
   position: relative;
 }
+nav .navLinks {
+  flex: 1;
+  display: flex;
+  justify-content: center;
+}
 nav .logo {
+  flex: 1;
   font-family: var(--fd);
   font-size: 1.5rem;
   font-weight: 700;
@@ -70,7 +75,13 @@ nav .logo {
   text-transform: uppercase;
 }
 nav .logo span { color: var(--accent); }
-nav .navRight { display: flex; align-items: center; gap: 80px; }
+nav .navRight {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 60px;
+  flex: 1;
+}
 nav .navLinks { display: flex; align-items: center; }
 nav .navLinks .links { display: flex; gap: 50px; }
 nav .navLinks .links a {
