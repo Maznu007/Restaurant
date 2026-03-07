@@ -15,7 +15,7 @@ dotenv.config({ path: "./config/config.env" });
 
 app.use(
   cors({
-    origin: [process.env.FRONTEND_URL, "http://localhost:5174"],
+    origin: [process.env.FRONTEND_URL, "https://restaurant-eosin-pi.vercel.app/"],
     methods: ["GET", "POST", "PUT", "DELETE"],
     credentials: true,
   })
