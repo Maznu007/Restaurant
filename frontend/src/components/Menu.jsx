@@ -27,7 +27,7 @@ const Menu = () => {
 
   const fetchMenu = async () => {
     try {
-      const { data: response } = await axios.get("http://localhost:4000/api/v1/menu/all");
+      const { data: response } = await axios.get("/api/v1/menu/all");
       setMenuItems(response.menuItems || data[0].dishes);
     } catch (error) {
       setMenuItems(data[0].dishes);
@@ -64,7 +64,7 @@ const Menu = () => {
     }
 
     try {
-      await axios.post("http://localhost:4000/api/v1/orders/create", {
+      await axios.post("/api/v1/orders/create", {
         items: [{
           dishId: selectedDish._id || selectedDish.id,
           name: selectedDish.name || selectedDish.title,
@@ -97,7 +97,7 @@ const Menu = () => {
     }
 
     try {
-      await axios.post("http://localhost:4000/api/v1/reviews/create", {
+      await axios.post("/api/v1/reviews/create", {
         dishId: selectedDish._id || selectedDish.id,
         rating,
         comment
