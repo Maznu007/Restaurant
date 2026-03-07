@@ -4,7 +4,7 @@ import App from './App.jsx';
 import axios from 'axios';
 
 // Set default axios config
-axios.defaults.baseURL = 'http://localhost:4000';
+axios.defaults.baseURL = "https://savour-stone.onrender.com";
 axios.defaults.headers.common['Content-Type'] = 'application/json';
 
 const token = localStorage.getItem('token');
