@@ -22,7 +22,7 @@ export const AuthProvider = ({ children }) => {
     const checkAuth = async () => {
       if (token) {
         try {
-          const { data } = await axios.get("http://localhost:4000/api/v1/auth/me");
+          const { data } = await axios.get("/api/v1/auth/me");
           setUser(data.user);
         } catch (error) {
           logout();
@@ -34,7 +34,7 @@ export const AuthProvider = ({ children }) => {
   }, [token]);
 
   const login = async (email, password) => {
-    const { data } = await axios.post("http://localhost:4000/api/v1/auth/login", {
+    const { data } = await axios.post("/api/v1/auth/login", {
       email,
       password,
     });
@@ -45,7 +45,7 @@ export const AuthProvider = ({ children }) => {
   };
 
   const register = async (userData) => {
-    const { data } = await axios.post("http://localhost:4000/api/v1/auth/register", userData);
+    const { data } = await axios.post("/api/v1/auth/register", userData);
     localStorage.setItem("token", data.token);
     setToken(data.token);
     setUser(data.user);

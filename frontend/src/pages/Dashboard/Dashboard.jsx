@@ -40,14 +40,14 @@ const Dashboard = () => {
   const fetchUserData = async () => {
     try {
       // Fetch orders
-      const ordersRes = await axios.get("http://localhost:4000/api/v1/orders/my-orders");
+      const ordersRes = await axios.get("/api/v1/orders/my-orders");
       const ordersData = ordersRes.data.orders || [];
       setOrders(ordersData);
 
       // Fetch reservations by email
       let reservationsData = [];
       try {
-        const resRes = await axios.get(`http://localhost:4000/api/v1/reservation/my-reservations?email=${user.email}`);
+        const resRes = await axios.get(`/api/v1/reservation/my-reservations?email=${user.email}`);
         reservationsData = resRes.data.reservations || [];
         setReservations(reservationsData);
       } catch (e) {
@@ -55,7 +55,7 @@ const Dashboard = () => {
       }
 
       // Fetch reviews
-      const reviewsRes = await axios.get("http://localhost:4000/api/v1/reviews/my-reviews");
+      const reviewsRes = await axios.get("/api/v1/reviews/my-reviews");
       const reviewsData = reviewsRes.data.reviews || [];
       setReviews(reviewsData);
 

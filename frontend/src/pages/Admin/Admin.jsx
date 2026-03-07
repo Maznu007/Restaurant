@@ -73,7 +73,7 @@ const Admin = () => {
 
   const fetchStats = async () => {
     try {
-      const { data } = await axios.get("http://localhost:4000/api/v1/auth/admin/stats");
+      const { data } = await axios.get("/api/v1/auth/admin/stats");
       setStats(data.stats);
     } catch (error) {
       console.error("Stats error:", error);
@@ -82,7 +82,7 @@ const Admin = () => {
 
   const fetchOrders = async () => {
     try {
-      const { data } = await axios.get("http://localhost:4000/api/v1/orders/admin/all");
+      const { data } = await axios.get("/api/v1/orders/admin/all");
       setOrders(data.orders || []);
       setFilterStatus("all");
     } catch (error) {
@@ -92,7 +92,7 @@ const Admin = () => {
 
   const fetchReservations = async () => {
     try {
-      const { data } = await axios.get("http://localhost:4000/api/v1/reservation/admin/all");
+      const { data } = await axios.get("/api/v1/reservation/admin/all");
       setReservations(data.reservations || []);
       setFilterStatus("all");
     } catch (error) {
@@ -102,7 +102,7 @@ const Admin = () => {
 
   const fetchReviews = async () => {
     try {
-      const { data } = await axios.get("http://localhost:4000/api/v1/reviews/admin/all");
+      const { data } = await axios.get("/api/v1/reviews/admin/all");
       setReviews(data.reviews || []);
       setFilterStatus("all");
     } catch (error) {
@@ -112,7 +112,7 @@ const Admin = () => {
 
   const fetchMenu = async () => {
     try {
-      const { data } = await axios.get("http://localhost:4000/api/v1/menu/admin/all");
+      const { data } = await axios.get("http:///api/v1/menu/admin/all");
       setMenuItems(data.menuItems || []);
     } catch (error) {
       console.error("Menu error:", error);
@@ -121,7 +121,7 @@ const Admin = () => {
 
   const fetchUsers = async () => {
     try {
-      const { data } = await axios.get("http://localhost:4000/api/v1/auth/admin/users");
+      const { data } = await axios.get("/api/v1/auth/admin/users");
       setUsers(data.users || []);
     } catch (error) {
       console.error("Users error:", error);
@@ -130,7 +130,7 @@ const Admin = () => {
 
   const updateOrderStatus = async (orderId, status) => {
     try {
-      await axios.put(`http://localhost:4000/api/v1/orders/admin/${orderId}/status`, { status });
+      await axios.put(`/api/v1/orders/admin/${orderId}/status`, { status });
       toast.success(`Order marked as ${status}`);
       fetchOrders();
       fetchStats();
@@ -141,7 +141,7 @@ const Admin = () => {
 
   const updateReservationStatus = async (resId, status) => {
     try {
-      await axios.put(`http://localhost:4000/api/v1/reservation/admin/${resId}/status`, { status });
+      await axios.put(`/api/v1/reservation/admin/${resId}/status`, { status });
       toast.success(`Reservation marked as ${status}`);
       fetchReservations();
       fetchStats();
@@ -152,7 +152,7 @@ const Admin = () => {
 
   const updateReviewStatus = async (reviewId, isApproved) => {
     try {
-      await axios.put(`http://localhost:4000/api/v1/reviews/admin/${reviewId}/status`, { isApproved });
+      await axios.put(`/api/v1/reviews/admin/${reviewId}/status`, { isApproved });
       toast.success(isApproved ? "Review approved" : "Review rejected");
       fetchReviews();
       fetchStats();
@@ -164,7 +164,7 @@ const Admin = () => {
   const deleteReview = async (reviewId) => {
     if (!window.confirm("Are you sure you want to delete this review?")) return;
     try {
-      await axios.delete(`http://localhost:4000/api/v1/reviews/admin/${reviewId}`);
+      await axios.delete(`/api/v1/reviews/admin/${reviewId}`);
       toast.success("Review deleted");
       fetchReviews();
       fetchStats();
@@ -175,7 +175,7 @@ const Admin = () => {
 
   const toggleMenuAvailability = async (itemId, currentStatus) => {
     try {
-      await axios.put(`http://localhost:4000/api/v1/menu/admin/${itemId}`, {
+      await axios.put(`/api/v1/menu/admin/${itemId}`, {
         isAvailable: !currentStatus
       });
       toast.success("Menu item updated");
