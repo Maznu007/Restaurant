@@ -2,6 +2,8 @@
 
 ------------------
 
+live link - https://restaurant-eosin-pi.vercel.app/
+
 Modern Restaurant Management System (MERN Stack)
 
 A full-stack restaurant management platform built with the MERN stack that enables customers to explore menus, order dishes, book tables, and review meals — while administrators manage restaurant operations through a powerful dashboard.
